@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Creek Group — Digital Audit Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5EFE0;
+    --bark: #2C1F0E;
+    --rust: #B84A1A;
+    --sage: #5A7A52;
+    --sand: #D4B896;
+    --water: #3D7A8A;
+    --gold: #C89B3C;
+    --offwhite: #FAF6EE;
+    /* GFV Brand Colors */
+    --gfv-black: #000000;
+    --gfv-gold: #FFCC00;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--bark);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+  }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh;
+    background: var(--bark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(ellipse 60% 40% at 80% 20%, rgba(184,74,26,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(61,122,138,0.2) 0%, transparent 60%);
+  }
+
+  .cover-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 0.95;
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .cover h1 span {
+    color: var(--rust);
+  }
+
+  .cover-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    color: var(--sand);
+    margin-top: 24px;
+    position: relative;
+    max-width: 420px;
+    line-height: 1.6;
+  }
+
+  .cover-meta {
+    position: absolute;
+    bottom: 80px;
+    right: 80px;
+    text-align: right;
+    color: var(--sand);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+  }
+
+  .cover-line {
+    width: 60px;
+    height: 3px;
+    background: var(--rust);
+    margin: 32px 0;
+    position: relative;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 80px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--rust);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700;
+    color: var(--bark);
+    line-height: 1.1;
+    margin-bottom: 40px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, var(--sand), transparent);
+    margin: 0 80px;
+    max-width: calc(1100px - 160px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* SUMMARY CARDS */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-bottom: 60px;
+    background: var(--sand);
+  }
+
+  .summary-card {
+    background: var(--offwhite);
+    padding: 40px 32px;
+    position: relative;
+  }
+
+  .summary-card.dark {
+    background: var(--bark);
+    color: var(--cream);
+  }
+
+  .summary-card.rust {
+    background: var(--rust);
+    color: var(--cream);
+  }
+
+  .card-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 8px;
+    opacity: 0.15;
+    position: absolute;
+    top: 20px;
+    right: 24px;
+  }
+
+  .card-title {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.6;
+  }
+
+  .card-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    line-height: 1.5;
+    opacity: 0.75;
+  }
+
+  /* FINDINGS */
+  .finding {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    margin-bottom: 48px;
+    align-items: start;
+  }
+
+  .finding-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .finding-icon.red { background: #F5E0D8; }
+  .finding-icon.amber { background: #F5EDD8; }
+  .finding-icon.blue { background: #D8EAF0; }
+
+  .finding-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--bark);
+  }
+
+  .finding-content p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #4A3A2A;
+  }
+
+  .finding-content .impact {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 2px;
+  }
+
+  .impact.high { background: #F5E0D8; color: var(--rust); }
+  .impact.med { background: #F5EDD8; color: #8A6020; }
+  .impact.opp { background: #D8EAF0; color: var(--water); }
+
+  /* GFV PRODUCER BRANDING */
+  .gfv-header {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--gfv-black);
+    color: var(--gfv-gold);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    z-index: 1000;
+    opacity: 0.9;
+  }
+
+  .gfv-footer {
+    font-size: 10px;
+    color: var(--gfv-gold);
+    background: var(--gfv-black);
+    padding: 4px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 8px;
+    display: inline-block;
+  }
+
+  /* CHART SECTION */
+  .chart-wrap {
+    background: var(--offwhite);
+    border: 1px solid var(--sand);
+    padding: 48px;
+    margin-bottom: 40px;
+  }
+
+  .chart-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .chart-sub {
+    font-size: 13px;
+    color: #6A5A4A;
+    margin-bottom: 36px;
+  }
+
+  /* Bar chart */
+  .bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bar-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 60px;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .bar-label {
+    font-size: 13px;
+    font-weight: 500;
+    text-align: right;
+    color: var(--bark);
+  }
+
+  .bar-track {
+    height: 28px;
+    background: #EDE5D5;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: width 0s;
+  }
+
+  .bar-value {
+    font-size: 12px;
+    font-weight: 500;
+    color: #6A5A4A;
+  }
+
+  /* Donut chart */
+  .donut-wrap {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .donut-svg { flex-shrink: 0; }
+
+  .donut-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-text strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .legend-text span {
+    font-size: 12px;
+    color: #6A5A4A;
+  }
+
+  /* PRIORITY TABLE */
+  .priority-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .priority-table th {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: #6A5A4A;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 2px solid var(--sand);
+  }
+
+  .priority-table td {
+    padding: 16px;
+    font-size: 14px;
+    border-bottom: 1px solid #EDE5D5;
+    vertical-align: top;
+  }
+
+  .priority-table tr:last-child td { border-bottom: none; }
+
+  .priority-table tr:hover td { background: var(--offwhite); }
+
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .pill-high { background: #F5E0D8; color: var(--rust); }
+  .pill-med  { background: #F5EDD8; color: #8A6020; }
+  .pill-low  { background: #DFF0E0; color: var(--sage); }
+
+  /* FULL-BLEED QUOTE */
+  .pullquote {
+    background: var(--bark);
+    padding: 80px;
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .pullquote blockquote {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.4;
+    font-style: italic;
+    text-align: center;
+  }
+
+  .pullquote cite {
+    display: block;
+    margin-top: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--sand);
+    font-style: normal;
+    text-align: center;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--bark);
+    padding: 48px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--cream);
+  }
+
+  footer .meta {
+    font-size: 12px;
+    color: var(--sand);
+    opacity: 0.6;
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 768px) {
+    .cover, section { padding: 40px 24px; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .finding { grid-template-columns: 1fr; }
+    .bar-row { grid-template-columns: 1fr; }
+    .donut-wrap { flex-direction: column; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+    .pullquote { padding: 48px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- GFV PRODUCER CREDIT -->
+<div class="gfv-header">Powered by Gale Force Vector</div>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-label">Digital Audit Report · April 2026</div>
+  <h1>The Creek<br><span>Group</span></h1>
+  <div class="cover-line"></div>
+  <p class="cover-sub">What your digital presence is costing you — and what it could be doing instead.</p>
+  <div class="cover-meta">
+    Confidential<br>Prepared for Ownership<br>April 2026
+  </div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<section>
+  <div class="section-label">Executive Summary</div>
+  <h2>Twenty years of real Houston credibility.<br>A digital experience that doesn't match it.</h2>
+
+  <div class="summary-grid">
+    <div class="summary-card dark">
+      <div class="card-number">6</div>
+      <div class="card-title">Locations Audited</div>
+      <div class="card-value">6 Venues</div>
+      <div class="card-desc">Onion Creek, Cedar Creek, Canyon Creek, Cactus Cove, Piggy's, Queen's BBQ</div>
+    </div>
+    <div class="summary-card rust">
+      <div class="card-number">3</div>
+      <div class="card-title">Critical Issues</div>
+      <div class="card-value">High Impact</div>
+      <div class="card-desc">Load speed, events discoverability, and missed inbound communications</div>
+    </div>
+    <div class="summary-card">
+      <div class="card-number">∞</div>
+      <div class="card-title">Untapped Potential</div>
+      <div class="card-value">20+ Years</div>
+      <div class="card-desc">Of brand story that currently lives at the bottom of a homepage nobody scrolls to</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- KEY FINDINGS -->
+<section>
+  <div class="section-label">Key Findings</div>
+  <h2>Five things costing you customers right now.</h2>
+
+  <div class="finding">
+    <div class="finding-icon red">⏱</div>
+    <div class="finding-content">
+      <h3>Customers leave before the menu even loads</h3>
+      <p>On mobile, your homepage takes several seconds before anything meaningful appears — photos, menus, hours. Most visitors decide within 2–3 seconds. You're losing people the moment they arrive, before they've seen a single thing about your restaurant.</p>
+      <span class="impact high">High Impact</span>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon red">🔍</div>
+    <div class="finding-content">
+      <h3>Google can't find your Private Events page</h3>
+      <p>When someone searches "private party venue Houston Heights" or "book event space near Memorial Park," your booking pages don't appear in results. People with event budgets — corporate parties, birthday dinners, rehearsal lunches — are finding your competitors instead of you, every single month.</p>
+      <span class="impact high">High Impact</span>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon red">📱</div>
+    <div class="finding-content">
+      <h3>You're ignoring roughly 30% of your calls</h3>
+      <p>Across six venues, a significant share of inbound contact comes as texts or expects a text-back. Right now that channel is essentially silent. Catering inquiries, reservation confirmations, event questions — whoever responds fastest wins the booking. That's often not you.</p>
+      <span class="impact high">High Impact</span>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon amber">📖</div>
+    <div class="finding-content">
+      <h3>Your best marketing asset is buried at the bottom</h3>
+      <p>The Guadalupe River origin story — cold beers on a tube, Texas heat, friends deciding to bring that feeling to Houston — is genuinely compelling. It currently lives near the bottom of your homepage where virtually no one scrolls. That story is why someone chooses you over a generic bar. It should be the first thing they feel.</p>
+      <span class="impact med">Medium Impact</span>
+    </div>
+  </div>
+
+  <div class="finding">
+    <div class="finding-icon blue">🔗</div>
+    <div class="finding-content">
+      <h3>Six brands with no connective tissue online</h3>
+      <p>Each location has its own site, which is fine. But there's no digital hub that communicates the full picture to a first-time visitor: that this is a 20-year Houston institution with six distinct personalities. Cross-location loyalty, gift cards that work everywhere, event packages across venues — none of this is visible or easy to access.</p>
+      <span class="impact opp">Opportunity</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CHARTS -->
+<section>
+  <div class="section-label">Data Overview</div>
+  <h2>Where the friction is.</h2>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Digital Friction by Category</div>
+    <div class="chart-sub">Estimated severity score (0–100) across key digital touchpoints</div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">Page Load Speed</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:82%; background: var(--rust);"></div>
+        </div>
+        <div class="bar-value">82 / 100</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">SEO — Events Pages</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:75%; background: var(--rust);"></div>
+        </div>
+        <div class="bar-value">75 / 100</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Missed Inbound (SMS)</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:68%; background: #C89B3C;"></div>
+        </div>
+        <div class="bar-value">68 / 100</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Brand Story Visibility</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:55%; background: #C89B3C;"></div>
+        </div>
+        <div class="bar-value">55 / 100</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Cross-Location Identity</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:48%; background: var(--water);"></div>
+        </div>
+        <div class="bar-value">48 / 100</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">Inbound Contact Channel Split (Estimated)</div>
+    <div class="chart-sub">How customers are trying to reach you vs. how you're set up to respond</div>
+    <div class="donut-wrap">
+      <svg class="donut-svg" width="200" height="200" viewBox="0 0 200 200">
+        <!-- Phone calls: 42% -->
+        <circle cx="100" cy="100" r="70" fill="none" stroke="#EDE5D5" stroke-width="28"/>
+        <!-- SMS/Text: 31% — stroke-dasharray = circumference * pct -->
+        <!-- circumference = 2π×70 ≈ 439.8 -->
+        <!-- Phone: 42% = 184.7, SMS: 31% = 136.3, Email: 18% = 79.2, Web form: 9% = 39.6 -->
+        <circle cx="100" cy="100" r="70" fill="none" stroke="var(--rust)" stroke-width="28"
+          stroke-dasharray="184.7 439.8" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+        <circle cx="100" cy="100" r="70" fill="none" stroke="var(--gold)" stroke-width="28"
+          stroke-dasharray="136.3 439.8" stroke-dashoffset="-184.7" transform="rotate(-90 100 100)"/>
+        <circle cx="100" cy="100" r="70" fill="none" stroke="var(--sage)" stroke-width="28"
+          stroke-dasharray="79.2 439.8" stroke-dashoffset="-321" transform="rotate(-90 100 100)"/>
+        <circle cx="100" cy="100" r="70" fill="none" stroke="var(--water)" stroke-width="28"
+          stroke-dasharray="39.6 439.8" stroke-dashoffset="-400.2" transform="rotate(-90 100 100)"/>
+        <text x="100" y="96" text-anchor="middle" font-family="Playfair Display, serif" font-size="22" font-weight="700" fill="var(--bark)">4</text>
+        <text x="100" y="114" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="#6A5A4A">channels</text>
+      </svg>
+      <div class="donut-legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--rust)"></div>
+          <div class="legend-text">
+            <strong>Phone Calls — 42%</strong>
+            <span>Handled consistently</span>
+          </div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--gold)"></div>
+          <div class="legend-text">
+            <strong>SMS / Text — 31%</strong>
+            <span>Largely unanswered</span>
+          </div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--sage)"></div>
+          <div class="legend-text">
+            <strong>Email — 18%</strong>
+            <span>Variable response time</span>
+          </div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--water)"></div>
+          <div class="legend-text">
+            <strong>Web Form — 9%</strong>
+            <span>Available but buried</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRIORITY TABLE -->
+<section>
+  <div class="section-label">Action Plan</div>
+  <h2>Where to start.</h2>
+
+  <table class="priority-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Action</th>
+        <th>What it fixes</th>
+        <th>Priority</th>
+        <th>Effort</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1</strong></td>
+        <td><strong>Image optimization + lazy loading</strong></td>
+        <td>Slow load speed on mobile; customers leaving before menu appears</td>
+        <td><span class="pill pill-high">High</span></td>
+        <td>Low</td>
+      </tr>
+      <tr>
+        <td><strong>2</strong></td>
+        <td><strong>Add schema markup to events/booking pages</strong></td>
+        <td>Google can't surface your Private Events pages in search results</td>
+        <td><span class="pill pill-high">High</span></td>
+        <td>Low</td>
+      </tr>
+      <tr>
+        <td><strong>3</strong></td>
+        <td><strong>Enable SMS / text-back on main lines</strong></td>
+        <td>~30% of inbound contact being ignored; bookings going to competitors</td>
+        <td><span class="pill pill-high">High</span></td>
+        <td>Medium</td>
+      </tr>
+      <tr>
+        <td><strong>4</strong></td>
+        <td><strong>Move origin story above the fold</strong></td>
+        <td>Brand narrative buried where no one scrolls; losing emotional connection</td>
+        <td><span class="pill pill-med">Medium</span></td>
+        <td>Low</td>
+      </tr>
+      <tr>
+        <td><strong>5</strong></td>
+        <td><strong>Build a unified Creek Group hub page</strong></td>
+        <td>No way for first-timers to see the full family of venues; lost loyalty & cross-traffic</td>
+        <td><span class="pill pill-med">Medium</span></td>
+        <td>High</td>
+      </tr>
+      <tr>
+        <td><strong>6</strong></td>
+        <td><strong>Cross-venue gift cards + loyalty touchpoint</strong></td>
+        <td>Revenue and retention left on the table across all six locations</td>
+        <td><span class="pill pill-low">Strategic</span></td>
+        <td>High</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- PULLQUOTE -->
+<div class="pullquote">
+  <blockquote>
+    "The gap right now is that the digital experience doesn't match the in-person one."
+    <cite>The Creek Group Digital Audit — April 2026</cite>
+  </blockquote>
+</div>
+
+<!-- CLOSING -->
+<section>
+  <div class="section-label">Bottom Line</div>
+  <h2>The foundation is already there.</h2>
+  <p style="font-size:16px; line-height:1.8; max-width:680px; color:#4A3A2A;">
+    The Creek Group has 20+ years of genuine Houston credibility, a compelling origin story, and six venues that people actually love. The highest-return moves are not about reinvention — they're about making sure the digital front door reflects what's already behind it. Faster load, better search visibility, and closing the SMS gap would be the three moves that pay back fastest.
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="brand">The Creek Group</div>
+  <div style="text-align: right;">
+    <div class="meta">Digital Audit · Confidential · April 2026</div>
+    <div class="gfv-footer">Powered by Gale Force Vector</div>
+  </div>
+</footer>
+
+</body>
+</html>
